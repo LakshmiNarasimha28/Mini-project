@@ -12,7 +12,6 @@ function dispalyProducts(data) {
             <img src="${product.thumbnail}" alt="${product.title}" />
             <h3>${product.title}</h3>
             <p>Price: $${product.price}</p>
-            <button>Add to Cart</button>
         `;
         productcontainer.appendChild(productDiv);
     });
