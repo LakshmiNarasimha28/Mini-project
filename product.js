@@ -10,7 +10,7 @@ function dispalyProducts(data) {
         productDiv.classList.add('product');
         productDiv.innerHTML = `
             <img src="${product.thumbnail}" alt="${product.title}" />
-            <h2>${product.title}</h2>
+            <h3>${product.title}</h3>
             <p>Price: $${product.price}</p>
             <button>Add to Cart</button>
         `;
@@ -29,5 +29,4 @@ async function fetchProducts() {
 }
 
 fetchProducts();
-
 
