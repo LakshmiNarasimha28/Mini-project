@@ -71,4 +71,18 @@ searchinput.addEventListener("input", () => {
     suggestionsbox.innerHTML = '';
 
     //show suggestions
-    
+    matches.forEach(item => {
+        const suggestionDiv = document.createElement("div");
+        suggestionDiv.className = "suggestion-item";
+        suggestionDiv.innerText = item.query;
+
+        suggestionDiv.addEventListener("click", () => {
+            searchinput.value = item.query;
+            suggestionsbox.innerHTML = '';
+        });
+
+        suggestionsbox.appendChild(suggestionDiv);
+    });
+});
+
+
