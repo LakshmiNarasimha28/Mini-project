@@ -4,12 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Bar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            /* background-color: oldlace; */
+        }
+        #results {
+            margin-top: 20px;
+        }
+
+        #searchinput {
+            padding: 8px;
+            width: 200px;
+            margin: 10px;
+
+        }
+        #searchbtn {
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
     <h4 id="heading"></h4>
-    <div id="results"></div>
     <input type="text" id="searchinput" placeholder="Search products..." />
     <button id="searchbtn">Search</button>
+    <div id="results"></div>
 </body>
 <script src="search.js" defer></script>
 </html>

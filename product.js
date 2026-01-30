@@ -31,12 +31,44 @@ fetchProducts();
 
 
 
-const seacrhbtn = document.getElementById("searchbtn");
+const searchbtn = document.getElementById("searchbtn");
 const searchinput = document.getElementById("searchinput");
-seacrhbtn.addEventListener("click", () => {
+searchbtn.addEventListener("click", () => {
     const query = searchinput.value.trim();
     console.log("Searching for:", query);
     if (!query) return;
-    window.location.href = `search.html?query=${encodeURIComponent(query)}`;
+    
+    // save to local storage
+    let history = JSON.parse(localStorage.getItem("searchHistory")) || [];
+    
+    // Check if query already exists
+    const existingIndex = history.findIndex(item => item.query === query);
+    if (existingIndex === -1) {
+        history.push({
+            query: query,
+            time: Date.now()
+        });
+        localStorage.setItem("searchHistory", JSON.stringify(history));
+    }
+    
+    window.location.href = `search.html?q=${encodeURIComponent(query)}`;
     searchinput.value="";
 });
+
+
+const suggestionsbox = document.getElementById("suggestions");
+searchinput.addEventListener("input", () => {
+    console.log("Suggestion triggered");
+
+    const text = searchinput.value.trim().toLowerCase();
+    const history = JSON.parse(localStorage.getItem("searchHistory")) || [];
+
+
+    //filter based on query field
+    const matches = history.filter(item => item.query.toLowerCase().includes(text));
+
+    // Clear previous suggestions
+    suggestionsbox.innerHTML = '';
+
+    //show suggestions
+    
