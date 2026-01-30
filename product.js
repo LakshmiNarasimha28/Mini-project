@@ -14,6 +14,11 @@ function displayProducts(data) {
             <p>Price: $${product.price}</p>
         `;
         productcontainer.appendChild(productDiv);
+        productDiv.addEventListener("click", ()=>{
+            window.location.href = `productdetails.html?id=${product.id}`;
+        });
+
+
     });
 }
 async function fetchProducts() {
@@ -92,5 +97,4 @@ searchinput.addEventListener("input", () => {
         suggestionsbox.appendChild(suggestionDiv);
     });
 });
-
 

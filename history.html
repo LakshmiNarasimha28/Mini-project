@@ -13,13 +13,6 @@
         }
         .header-buttons {
             margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .clear-button {
-            display: flex;
-            gap: 10px;
         }
         #backbtn {
             padding: 8px 16px;
@@ -36,6 +29,11 @@
         #history-container {
             margin-top: 20px;
         }
+        .clearbuttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
         #clearhistorybtn {
             padding: 6px 12px;
             cursor: pointer;
@@ -43,8 +41,6 @@
             background-color: #f44336;
             color: white;
             border: none;
-            margin-right: 10px;
-            
         }
         #clearhistorybtn:hover {
             background-color: #da190b;
@@ -57,10 +53,12 @@
             color: white;
             border: none;
             display: none;
-            margin-left: 10px;
         }
         #deleteselectedbtn:hover {
             background-color: #e68900;
+        }
+        #deleteselectedbtn.show {
+            display: inline-block;
         }
         .history-item {
             border: 1px solid #ddd;
@@ -82,16 +80,14 @@
     </style>
 </head>
 <body>
-<body>
     <h1>Search History</h1>
     <div class="header-buttons">
         <button id="backbtn">← Back</button>
-        <div class="clear-button">
-            <button id="clearhistorybtn">Clear All</button>
-            <button id="deleteselectedbtn">Delete Selected</button>
-        </div>
     </div>
-
+    <div class="clearbuttons">
+        <button id="clearhistorybtn">Clear All</button>
+        <button id="deleteselectedbtn">Delete Selected</button>
+    </div>
 
     <div id="history-container"></div>
 

@@ -57,11 +57,15 @@ fetch(`https://dummyjson.com/products`)
                 productDiv.style.border = '1px solid #ddd';
                 productDiv.style.padding = '10px';
                 productDiv.style.borderRadius = '5px';
+                productDiv.style.cursor = 'pointer';
                 productDiv.innerHTML = `
                     <img src="${product.thumbnail}" alt="${product.title}" style="width: 100%; height: 150px; object-fit: cover;" />
                     <h3>${product.title}</h3>
                     <p>Price: $${product.price}</p>
                 `;
+                productDiv.addEventListener('click', () => {
+                    window.location.href = `productdetails.html?id=${product.id}`;
+                });
                 container.appendChild(productDiv);
             });
         }
