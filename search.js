@@ -16,7 +16,7 @@ searchbtn.addEventListener("click", () => {
         });
         localStorage.setItem("searchHistory", JSON.stringify(history));
     }
-    
+
     window.location.href = `search.html?q=${encodeURIComponent(query)}`;
     searchinput.value="";
 });
@@ -46,9 +46,11 @@ fetch(`https://dummyjson.com/products`)
             
             filteredProducts.forEach(product => {
                 let productDiv = document.createElement('div');
-                productDiv.style.border = '1px solid #ddd';
+                productDiv.style.border = '3px solid black';
                 productDiv.style.padding = '10px';
                 productDiv.style.borderRadius = '5px';
+                productDiv.style.backgroundColor = 'oldlace';
+                productDiv.style.textAlign = 'center';
                 productDiv.innerHTML = `
                     <img src="${product.thumbnail}" alt="${product.title}" style="width: 100%; height: 150px; object-fit: cover;" />
                     <h3>${product.title}</h3>
