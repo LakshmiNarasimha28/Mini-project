@@ -14,6 +14,9 @@ fetch("https://dummyjson.com/products/" + productId)
     .then(product => {
         console.log("Product details:", product);
 
+        // Save to view history
+        saveToViewHistory(product);
+
         // Set main product info
         document.getElementById("title").innerText = product.title;
         document.getElementById("thumbnail").src = product.images[0] || product.thumbnail;
@@ -79,3 +82,32 @@ fetch("https://dummyjson.com/products/" + productId)
         console.error("Error fetching product details:", error);
         document.body.innerHTML = '<p style="text-align: center; padding: 40px;">Failed to load product details. Please try again.</p>';
     });
+
+// Function to save viewed product to localStorage
+function saveToViewHistory(product) {
+    let viewHistory = JSON.parse(localStorage.getItem("viewHistory")) || [];
+    
+    // Create history item
+    const historyItem = {
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        image: product.images[0] || product.thumbnail,
+        rating: product.rating,
+        timestamp: Date.now()
+    };
+    
+    // Remove if already exists (to update timestamp)
+    viewHistory = viewHistory.filter(item => item.id !== product.id);
+    
+    // Add to beginning
+    viewHistory.unshift(historyItem);
+    
+    // Keep only last 50 items
+    if (viewHistory.length > 50) {
+        viewHistory = viewHistory.slice(0, 50);
+    }
+    
+    // Save to localStorage
+    localStorage.setItem("viewHistory", JSON.stringify(viewHistory));
+}

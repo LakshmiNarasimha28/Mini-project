@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View History - Recently Viewed Products</title>
+    <script src="viewhistory.js" defer></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .header-content {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        #backbtn {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        #backbtn:hover {
+            background-color: #0b7dda;
+            transform: translateX(-5px);
+        }
+        
+        #clearhistorybtn {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        #clearhistorybtn:hover {
+            background-color: #da190b;
+        }
+        
+        h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        #products-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .product {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+            background-color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+        }
+        
+        .product img {
+            max-width: 100%;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        
+        .product h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #333;
+            min-height: 40px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .product p {
+            font-size: 18px;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+        
+        .empty-message {
+            text-align: center;
+            padding: 60px 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            grid-column: 1 / -1;
+        }
+        
+        .empty-message h2 {
+            font-size: 24px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .empty-message p {
+            color: #999;
+            font-size: 16px;
+        }
+        
+        #paging {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        #paging button {
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0 5px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        #paging button:hover:not(:disabled) {
+            background-color: #e0e0e0;
+        }
+        
+        #paging button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        @media (max-width: 768px) {
+            .header-section {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            #products-container {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-section">
+        <div class="header-content">
+            <h1>Recently Viewed Products</h1>
+            <p class="subtitle">Your browsing history</p>
+        </div>
+        <div class="header-buttons">
+            <button id="backbtn">← Back</button>
+            <button id="clearhistorybtn">Clear All</button>
+        </div>
+    </div>
+
+    <section id="products-container"></section>
+    <div id="paging"></div>
+</body>
+</html>

@@ -1,10 +1,27 @@
-let productcontainer = document.getElementById("products-container");
-let pagingContainer = document.getElementById("paging");
+// Back button functionality
+const backbtn = document.getElementById("backbtn");
+if (backbtn) {
+    backbtn.addEventListener("click", () => {
+        window.location.href = "index.html";
+    });
+}
+
+// Clear history button
+const clearhistorybtn = document.getElementById("clearhistorybtn");
+if (clearhistorybtn) {
+    clearhistorybtn.addEventListener("click", () => {
+        if (confirm("Are you sure you want to clear all view history?")) {
+            localStorage.removeItem("viewHistory");
+            currentPage = 1;
+            renderViewHistory();
+        }
+    });
+}
 
 // Pagination variables
 let currentPage = 1;
 let itemsPerPage = 12;
-let allProducts = [];
+let viewHistory = [];
 let totalPages = 0;
 
 function displayProducts(data, page = 1) {
@@ -13,21 +30,22 @@ function displayProducts(data, page = 1) {
     const endIndex = startIndex + itemsPerPage;
     const paginatedData = data.slice(startIndex, endIndex);
 
-    productcontainer.style.display = 'grid';
-    productcontainer.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
-    productcontainer.style.gap = '20px';
-    productcontainer.innerHTML = '';
+    const container = document.getElementById("products-container");
+    container.style.display = 'grid';
+    container.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
+    container.style.gap = '20px';
+    container.innerHTML = '';
     
-    paginatedData.forEach(product =>{
+    paginatedData.forEach(product => {
         let productDiv = document.createElement('div');
         productDiv.classList.add('product');
         productDiv.innerHTML = `
-            <img src="${product.thumbnail}" alt="${product.title}" />
+            <img src="${product.image}" alt="${product.title}" />
             <h3>${product.title}</h3>
             <p>Price: $${product.price}</p>
         `;
-        productcontainer.appendChild(productDiv);
-        productDiv.addEventListener("click", ()=>{
+        container.appendChild(productDiv);
+        productDiv.addEventListener("click", () => {
             window.location.href = `productdetails.html?id=${product.id}`;
         });
     });
@@ -37,6 +55,7 @@ function displayProducts(data, page = 1) {
 }
 
 function showPagination(totalItems, currentPageNum) {
+    const pagingContainer = document.getElementById("paging");
     pagingContainer.innerHTML = '';
     totalPages = Math.ceil(totalItems / itemsPerPage);
     
@@ -64,7 +83,7 @@ function showPagination(totalItems, currentPageNum) {
     prevBtn.addEventListener('click', () => {
         if (currentPageNum > 1) {
             currentPage = currentPageNum - 1;
-            displayProducts(allProducts, currentPage);
+            displayProducts(viewHistory, currentPage);
             window.scrollTo(0, 0);
         }
     });
@@ -116,7 +135,7 @@ function showPagination(totalItems, currentPageNum) {
     nextBtn.addEventListener('click', () => {
         if (currentPageNum < totalPages) {
             currentPage = currentPageNum + 1;
-            displayProducts(allProducts, currentPage);
+            displayProducts(viewHistory, currentPage);
             window.scrollTo(0, 0);
         }
     });
@@ -140,7 +159,7 @@ function createPageButton(pageNum, currentPageNum) {
     
     btn.addEventListener('click', () => {
         currentPage = pageNum;
-        displayProducts(allProducts, currentPage);
+        displayProducts(viewHistory, currentPage);
         window.scrollTo(0, 0);
     });
     
@@ -159,91 +178,28 @@ function createPageButton(pageNum, currentPageNum) {
     return btn;
 }
 
-async function fetchProducts() {
-    try {
-        let response = await fetch("https://dummyjson.com/products");
-        let data = await response.json();
-        console.log(data.products);
-        allProducts = data.products;
-        currentPage = 1;
-        displayProducts(allProducts, currentPage);
-    } catch (error) {
-        console.error("Error fetching products:", error);
-    }
-}
-
-fetchProducts();
-
-
-
-const searchbtn = document.getElementById("searchbtn");
-const searchinput = document.getElementById("searchinput");
-searchbtn.addEventListener("click", () => {
-    const query = searchinput.value.trim();
-    console.log("Searching for:", query);
-    if (!query) return;
+// Render view history
+function renderViewHistory() {
+    const container = document.getElementById("products-container");
+    viewHistory = JSON.parse(localStorage.getItem("viewHistory")) || [];
     
-    // save to local storage
-    let history = JSON.parse(localStorage.getItem("searchHistory")) || [];
-    
-    // Check if query already exists
-    const existingIndex = history.findIndex(item => item.query === query);
-    if (existingIndex === -1) {
-        history.push({
-            query: query,
-            time: Date.now()
-        });
-        localStorage.setItem("searchHistory", JSON.stringify(history));
+    if (viewHistory.length === 0) {
+        container.innerHTML = `
+            <div class="empty-message">
+                <h2>No viewing history yet</h2>
+                <p>Products you view will appear here</p>
+            </div>
+        `;
+        document.getElementById("paging").innerHTML = '';
+        return;
     }
     
-    window.location.href = `search.html?q=${encodeURIComponent(query)}`;
-    searchinput.value="";
-});
-
-
-// History button functionality
-const historybtn = document.getElementById("historybtn");
-if (historybtn) {
-    historybtn.addEventListener("click", () => {
-        window.location.href = "history.html";
-    });
+    // Sort by most recent first
+    viewHistory.sort((a, b) => b.timestamp - a.timestamp);
+    
+    currentPage = 1;
+    displayProducts(viewHistory, currentPage);
 }
 
-// View history button functionality
-const viewhistorybtn = document.getElementById("viewhistory");
-if (viewhistorybtn) {
-    viewhistorybtn.addEventListener("click", () => {
-        window.location.href = "viewhistory.html";
-    });
-}
-
-const suggestionsbox = document.getElementById("suggestions");
-searchinput.addEventListener("input", () => {
-    console.log("Suggestion triggered");
-
-    const text = searchinput.value.trim().toLowerCase();
-    const history = JSON.parse(localStorage.getItem("searchHistory")) || [];
-
-
-    //filter based on query field
-    const matches = history.filter(item => item.query.toLowerCase().includes(text));
-
-    // Clear previous suggestions
-    suggestionsbox.innerHTML = '';
-
-    //show suggestions
-    matches.forEach(item => {
-        const suggestionDiv = document.createElement("div");
-        suggestionDiv.className = "suggestion-item";
-        suggestionDiv.innerText = item.query;
-
-        suggestionDiv.addEventListener("click", () => {
-            searchinput.value = item.query;
-            suggestionsbox.innerHTML = '';
-        });
-
-        suggestionsbox.appendChild(suggestionDiv);
-    });
-});
-
-//view history
+// Initial render
+renderViewHistory();
