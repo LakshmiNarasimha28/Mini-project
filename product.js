@@ -56,6 +56,14 @@ searchbtn.addEventListener("click", () => {
 });
 
 
+// History button functionality
+const historybtn = document.getElementById("historybtn");
+if (historybtn) {
+    historybtn.addEventListener("click", () => {
+        window.location.href = "history.html";
+    });
+}
+
 const suggestionsbox = document.getElementById("suggestions");
 searchinput.addEventListener("input", () => {
     console.log("Suggestion triggered");

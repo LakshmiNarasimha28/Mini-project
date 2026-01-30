@@ -1,39 +1,99 @@
 
-let historydiv = document.getElementById("history-container");
-let history = JSON.parse(localStorage.getItem("searchHistory")) || [];
-
-if (history.length === 0) {
-    historydiv.innerHTML = '<p>No search history found.</p>';
-} else {
-    // Sort history by time, most recent first
-    history.sort((a, b) => b.time - a.time);
-    history.forEach(item => {
-        let itemDiv = document.createElement("div");
-        itemDiv.className = "history-item";
-        let date = new Date(item.time);
-        itemDiv.innerHTML = `
-            <strong>${item.query}</strong><br/>
-            <small>${date.toLocaleString()}</small>
-            <input type="checkbox" id="clearhistorycheckbox" title="Clear this history item"/>
-        `;
-        historydiv.appendChild(itemDiv);
+// Back button functionality
+const backbtn = document.getElementById("backbtn");
+if (backbtn) {
+    backbtn.addEventListener("click", () => {
+        window.location.href = "index.html";
     });
-
-
 }
-//clear history functionality
 
-const clearbtn = document.getElementById("clearhistorybtn");
-clearbtn.addEventListener("click", () => {
-    localStorage.removeItem("searchHistory");
-    historydiv.innerHTML = '<p>No search history found.</p>';
-});
+let historydiv = document.getElementById("history-container");
+let deleteselectedbtn = document.getElementById("deleteselectedbtn");
+let clearbtn = document.getElementById("clearhistorybtn");
+let selectedItems = [];
 
-//clear history using checkbox click
-const clearcheckbox = document.getElementById("clearhistorycheckbox");
-clearcheckbox.addEventListener("change", () => {
-    if (clearcheckbox.checked) {
-        localStorage.removeItem("searchHistory");
+function searchHistory() {
+    let history = JSON.parse(localStorage.getItem("searchHistory")) || [];
+    historydiv.innerHTML = '';
+    selectedItems = [];
+    deleteselectedbtn.classList.remove('show');
+    
+    if (history.length === 0) {
         historydiv.innerHTML = '<p>No search history found.</p>';
+    } else {
+        // Sort history by time, most recent first
+        history.sort((a, b) => b.time - a.time);
+        history.forEach((item, index) => {
+            let itemDiv = document.createElement("div");
+            itemDiv.className = "history-item";
+            itemDiv.id = `history-item-${index}`;
+            let date = new Date(item.time);
+            
+            let contentDiv = document.createElement("div");
+            contentDiv.style.flex = '1';
+            contentDiv.innerHTML = `
+                <strong>${item.query}</strong><br/>
+                <small>${date.toLocaleString()}</small>
+            `;
+            
+            let checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.className = "history-checkbox";
+            checkbox.dataset.index = index;
+            checkbox.dataset.query = item.query;
+            checkbox.title = "Select this history item";
+            checkbox.addEventListener("change", handleCheckboxChange);
+            
+            itemDiv.appendChild(contentDiv);
+            itemDiv.appendChild(checkbox);
+            historydiv.appendChild(itemDiv);
+        });
+    }
+}
+
+function handleCheckboxChange(e) {
+    const checkbox = e.target;
+    const itemDiv = checkbox.parentElement;
+    const query = checkbox.dataset.query;
+    
+    if (checkbox.checked) {
+        selectedItems.push(query);
+        itemDiv.classList.add('selected');
+    } else {
+        selectedItems = selectedItems.filter(q => q !== query);
+        itemDiv.classList.remove('selected');
+    }
+    
+    // Show/hide delete button based on selection
+    if (selectedItems.length > 0) {
+        deleteselectedbtn.classList.add('show');
+    } else {
+        deleteselectedbtn.classList.remove('show');
+    }
+}
+
+function deleteSelectedItems() {
+    let history = JSON.parse(localStorage.getItem("searchHistory")) || [];
+    // Filter out selected items
+    history = history.filter(item => !selectedItems.includes(item.query));
+    localStorage.setItem("searchHistory", JSON.stringify(history));
+    searchHistory();
+}
+
+// Clear all history
+clearbtn.addEventListener("click", () => {
+    if (confirm("Are you sure you want to clear all search history?")) {
+        localStorage.removeItem("searchHistory");
+        searchHistory();
     }
 });
+
+// Delete selected items
+deleteselectedbtn.addEventListener("click", () => {
+    if (selectedItems.length > 0 && confirm(`Delete ${selectedItems.length} selected item(s)?`)) {
+        deleteSelectedItems();
+    }
+});
+
+// Initial render
+searchHistory();

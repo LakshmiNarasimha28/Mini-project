@@ -11,6 +11,28 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
+        .header-buttons {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .clear-button {
+            display: flex;
+            gap: 10px;
+        }
+        #backbtn {
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            margin-right: 10px;
+        }
+        #backbtn:hover {
+            background-color: #0b7dda;
+        }
         #history-container {
             margin-top: 20px;
         }
@@ -18,14 +40,58 @@
             padding: 6px 12px;
             cursor: pointer;
             border-radius: 5px;
-            align-items:end;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            margin-right: 10px;
             
+        }
+        #clearhistorybtn:hover {
+            background-color: #da190b;
+        }
+        #deleteselectedbtn {
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            display: none;
+            margin-left: 10px;
+        }
+        #deleteselectedbtn:hover {
+            background-color: #e68900;
+        }
+        .history-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .history-item input[type="checkbox"] {
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .history-item.selected {
+            background-color: #e3f2fd;
         }
     </style>
 </head>
 <body>
+<body>
     <h1>Search History</h1>
-    <button id="clearhistorybtn">Clear</button>
+    <div class="header-buttons">
+        <button id="backbtn">← Back</button>
+        <div class="clear-button">
+            <button id="clearhistorybtn">Clear All</button>
+            <button id="deleteselectedbtn">Delete Selected</button>
+        </div>
+    </div>
+
 
     <div id="history-container"></div>
 
