@@ -12,11 +12,20 @@ let deleteselectedbtn = document.getElementById("deleteselectedbtn");
 let clearbtn = document.getElementById("clearhistorybtn");
 let selectedItems = [];
 
+function updateDeleteButtonVisibility() {
+    if (!deleteselectedbtn) return;
+    if (selectedItems.length > 0) {
+        deleteselectedbtn.classList.add('show');
+    } else {
+        deleteselectedbtn.classList.remove('show');
+    }
+}
+
 function searchHistory() {
     let history = JSON.parse(localStorage.getItem("searchHistory")) || [];
     historydiv.innerHTML = '';
     selectedItems = [];
-    deleteselectedbtn.classList.remove('show');
+    updateDeleteButtonVisibility();
     
     if (history.length === 0) {
         historydiv.innerHTML = '<p>No search history found.</p>';
@@ -35,6 +44,9 @@ function searchHistory() {
                 <strong>${item.query}</strong><br/>
                 <small>${date.toLocaleString()}</small>
             `;
+            contentDiv.addEventListener("click", () => {
+                window.location.href = `search.html?q=${encodeURIComponent(item.query)}`;
+            });
             
             let checkbox = document.createElement("input");
             checkbox.type = "checkbox";
@@ -65,11 +77,7 @@ function handleCheckboxChange(e) {
     }
     
     // Show/hide delete button based on selection
-    if (selectedItems.length > 0) {
-        deleteselectedbtn.classList.add('show');
-    } else {
-        deleteselectedbtn.classList.remove('show');
-    }
+    updateDeleteButtonVisibility();
 }
 
 function deleteSelectedItems() {
@@ -89,11 +97,13 @@ clearbtn.addEventListener("click", () => {
 });
 
 // Delete selected items
-deleteselectedbtn.addEventListener("click", () => {
-    if (selectedItems.length > 0 && confirm(`Delete ${selectedItems.length} selected item(s)?`)) {
-        deleteSelectedItems();
-    }
-});
+if (deleteselectedbtn) {
+    deleteselectedbtn.addEventListener("click", () => {
+        if (selectedItems.length > 0 && confirm(`Delete ${selectedItems.length} selected item(s)?`)) {
+            deleteSelectedItems();
+        }
+    });
+}
 
 // Initial render
 searchHistory();
