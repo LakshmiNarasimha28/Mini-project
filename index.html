@@ -6,11 +6,45 @@
     <title>Product Store</title>
     <script src="product.js" defer></script>
     <style>
-        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: oldlace;
+
+        }
+        #products-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            ;
+        }
+        .product {
+            border: 3px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        .product img {
+            max-width: 100%;
+            height: auto;
+        }
+        #searchinput {
+            padding: 8px;
+            width: 200px;
+            margin-right: 10px;
+        }
+        #searchbtn {
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
     <h1>Product Store</h1>
+    <input type="text" id="searchinput" placeholder="Search products..." />
+    <button id="searchbtn">Search</button>
+
+    <div id="results"></div>
     <section id="products-container"></section>
     
 </body>

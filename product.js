@@ -1,6 +1,6 @@
 let productcontainer = document.getElementById("products-container");
 
-function dispalyProducts(data) {
+function displayProducts(data) {
 
     productcontainer.style.display = 'grid';
     productcontainer.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
@@ -21,7 +21,7 @@ async function fetchProducts() {
         let response = await fetch("https://dummyjson.com/products");
         let data = await response.json();
         console.log(data.products);
-        dispalyProducts(data.products);
+        displayProducts(data.products);
     } catch (error) {
         console.error("Error fetching products:", error);
     }
@@ -29,3 +29,14 @@ async function fetchProducts() {
 
 fetchProducts();
 
+
+
+const seacrhbtn = document.getElementById("searchbtn");
+const searchinput = document.getElementById("searchinput");
+seacrhbtn.addEventListener("click", () => {
+    const query = searchinput.value.trim();
+    console.log("Searching for:", query);
+    if (!query) return;
+    window.location.href = `search.html?query=${encodeURIComponent(query)}`;
+    searchinput.value="";
+});
