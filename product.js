@@ -56,6 +56,14 @@ searchbtn.addEventListener("click", () => {
 });
 
 
+// History button functionality
+const historybtn = document.getElementById("historybtn");
+if (historybtn) {
+    historybtn.addEventListener("click", () => {
+        window.location.href = "history.html";
+    });
+}
+
 const suggestionsbox = document.getElementById("suggestions");
 searchinput.addEventListener("input", () => {
     console.log("Suggestion triggered");
@@ -71,4 +79,18 @@ searchinput.addEventListener("input", () => {
     suggestionsbox.innerHTML = '';
 
     //show suggestions
-    
+    matches.forEach(item => {
+        const suggestionDiv = document.createElement("div");
+        suggestionDiv.className = "suggestion-item";
+        suggestionDiv.innerText = item.query;
+
+        suggestionDiv.addEventListener("click", () => {
+            searchinput.value = item.query;
+            suggestionsbox.innerHTML = '';
+        });
+
+        suggestionsbox.appendChild(suggestionDiv);
+    });
+});
+
+

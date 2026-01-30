@@ -1,3 +1,11 @@
+// Back button functionality
+const backbtn = document.getElementById("backbtn");
+if (backbtn) {
+    backbtn.addEventListener("click", () => {
+        window.location.href = "index.html";
+    });
+}
+
 const searchbtn = document.getElementById("searchbtn");
 const searchinput = document.getElementById("searchinput");
 searchbtn.addEventListener("click", () => {
