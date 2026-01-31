@@ -46,19 +46,30 @@ fetch("https://dummyjson.com/products")
         card.addEventListener("click", ()=>{
             window.location.href = `productdetails.html?id=${product.id}`;
         });
+        // prevbtn.addEventListener("click", ()=>{
+        //     if (currentpage > 1) {
+        //         currentpage--;
+        //         renderpage();
+        //         window.scrollTo({top:0, behavior: "smooth"});
+        //     }
+        // });
+        // nextbtn.addEventListener("click", ()=>{
+        //     if (currentpage < totalPages) {
+        //         currentpage++;
+        //         renderpage();
+        //         window.scrollTo({top:0, behavior: "smooth"});
+        //     }
+        // });
         prevbtn.addEventListener("click", ()=>{
-            if (currentpage > 1) {
-                currentpage--;
-                renderpage();
-                window.scrollTo({top:0, behavior: "smooth"});
-            }
+            currentpage--;
+            renderpage();
+            window.scrollTo({top:0, behavior: "smooth"});
         });
         nextbtn.addEventListener("click", ()=>{
-            if (currentpage < totalPages) {
-                currentpage++;
-                renderpage();
-                window.scrollTo({top:0, behavior: "smooth"});
-            }
+            currentpage++;
+            renderpage();
+            window.scrollTo({top:0, behavior: "smooth"});
         });
+
     });
 }

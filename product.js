@@ -3,7 +3,7 @@ let pagingContainer = document.getElementById("paging");
 
 // Pagination variables
 let currentPage = 1;
-let itemsPerPage = 12;
+let itemsPerPage = 18;
 let allProducts = [];
 let totalPages = 0;
 
@@ -161,7 +161,7 @@ function createPageButton(pageNum, currentPageNum) {
 
 async function fetchProducts() {
     try {
-        let response = await fetch("https://dummyjson.com/products");
+        let response = await fetch("https://dummyjson.com/products?limit=100");
         let data = await response.json();
         console.log(data.products);
         allProducts = data.products;
